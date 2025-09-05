@@ -1,6 +1,6 @@
 <div align="center">
 
-# Lightning-Hydra-Template
+# PhaseNet: Phase Classification from 4D-STEM Data
 
 [![python](https://img.shields.io/badge/-Python_3.8_%7C_3.9_%7C_3.10-blue?logo=python&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![pytorch](https://img.shields.io/badge/PyTorch_2.0+-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/get-started/locally/)
@@ -8,17 +8,10 @@
 [![hydra](https://img.shields.io/badge/Config-Hydra_1.3-89b8cd)](https://hydra.cc/)
 [![black](https://img.shields.io/badge/Code%20Style-Black-black.svg?labelColor=gray)](https://black.readthedocs.io/en/stable/)
 [![isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/) <br>
-[![tests](https://github.com/ashleve/lightning-hydra-template/actions/workflows/test.yml/badge.svg)](https://github.com/ashleve/lightning-hydra-template/actions/workflows/test.yml)
-[![code-quality](https://github.com/ashleve/lightning-hydra-template/actions/workflows/code-quality-main.yaml/badge.svg)](https://github.com/ashleve/lightning-hydra-template/actions/workflows/code-quality-main.yaml)
-[![codecov](https://codecov.io/gh/ashleve/lightning-hydra-template/branch/main/graph/badge.svg)](https://codecov.io/gh/ashleve/lightning-hydra-template) <br>
-[![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/ashleve/lightning-hydra-template#license)
-[![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ashleve/lightning-hydra-template/pulls)
-[![contributors](https://img.shields.io/github/contributors/ashleve/lightning-hydra-template.svg)](https://github.com/ashleve/lightning-hydra-template/graphs/contributors)
 
-A clean template to kickstart your deep learning project 🚀⚡🔥<br>
-Click on [<kbd>Use this template</kbd>](https://github.com/ashleve/lightning-hydra-template/generate) to initialize new repository.
+A machine learning framework for phase (material) classification from 4D-STEM (4-dimensional scanning transmission electron microscopy) diffraction patterns using PyTorch Lightning and Hydra.
 
-_Suggestions are always welcome!_
+_Based on the Lightning-Hydra-Template._
 
 </div>
 
@@ -26,7 +19,18 @@ _Suggestions are always welcome!_
 
 ## 📌  Introduction
 
+**PhaseNet** is designed for classifying different material phases (e.g., Ni, Al, background) from 4D-STEM diffraction patterns. 
+
 **Why you might want to use it:**
+
+✅ **Phase Classification** <br>
+Automatically classify material phases from diffraction patterns using deep learning.
+
+✅ **Pretrained Models** <br>
+Leverage state-of-the-art pretrained models (ResNet, EfficientNet, etc.) for better performance.
+
+✅ **Class Imbalance Handling** <br>
+Built-in support for effective class weighting and reliability-based sample weighting.
 
 ✅ Save on boilerplate <br>
 Easily add new models, datasets, tasks, experiments, and train on different accelerators, like multi-GPU, TPU or SLURM clusters.
@@ -1294,4 +1298,49 @@ You can override any parameter from command line like this
 
 ```bash
 python src/train.py trainer.max_epochs=20 data.batch_size=64
+```
+
+### 🔬 Phase Classification from 4D-STEM Data
+
+PhaseNet provides state-of-the-art phase classification capabilities for 4D-STEM diffraction patterns.
+
+#### Data Preparation
+
+1. **Organize your data** in the following structure:
+```
+data/phase_stem/
+├── DiffractionPatterns/
+│   ├── Image-00001.tif
+│   ├── Image-00002.tif
+│   └── ...
+├── phase_id_map.npy  # or phase_id_map.tif
+└── phase_reliability_map.tif  # optional
+```
+
+2. **Convert phase maps** (if needed):
+```bash
+python scripts/convert_phase_map.py \
+  --infile data/Phase-PhaseMapDisplay.tif \
+  --outprefix phase_id_map
+```
+
+#### Training
+
+**Basic phase classification:**
+```bash
+python src/train.py -cn train_phase_classification
+```
+
+**With custom settings:**
+```bash
+python src/train.py -cn train_phase_classification \
+  data.data_root=data/your_4dstem_data/ \
+  model.num_classes=3 \
+  model.network_type=resnet50 \
+  trainer.max_epochs=50
+```
+
+**Using experiment configs:**
+```bash
+python src/train.py experiment=phase_classification_example
 ```

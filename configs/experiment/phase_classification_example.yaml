@@ -1,0 +1,42 @@
+# @package _global_
+
+# Example experiment config for phase classification
+# Run with: python src/train.py experiment=phase_classification_example
+
+defaults:
+  - override /data: phase_stem.yaml
+  - override /model: phase_classification.yaml
+  - override /callbacks: default.yaml
+  - override /trainer: default.yaml
+  - override /logger: tensorboard.yaml
+
+# All parameters below will be merged with default configurations
+# This allows you to overwrite only specified parameters
+
+tags: ["4d_stem", "phase", "classification", "resnet50"]
+
+seed: 42
+
+trainer:
+  min_epochs: 10
+  max_epochs: 50
+  gradient_clip_val: 0.5
+  accelerator: "gpu"  # use "cpu" or "gpu"
+
+model:
+  num_classes: 3
+  network_type: "resnet50" 
+  learning_rate: 0.001
+  pretrained: true
+  freeze_backbone: false
+  class_weighting: "effective"
+
+data:
+  batch_size: 256
+  augment_training: true
+  include_background: true
+
+logger:
+  tensorboard:
+    # tags: ${tags}
+    name: "phase_classification"

@@ -1,0 +1,21 @@
+_target_: src.data.phase_stem_datamodule.PhaseSTEMDataModule
+
+# Path containing: phase_id_map.(npy|tif) + DiffractionPatterns/ (Image-*.tif)
+data_root: data/phase_stem/
+
+# If null will search for phase_id_map.(npy|tif)
+phase_map_filename: phase_id_map_for_phase_classification.tif
+# Optional reliability map (values 0..1). If null, not used.
+reliability_map_filename: "Phase Reliability-PhaseReliabilityMap.tif"
+
+batch_size: 32
+num_workers: 4
+pin_memory: true
+
+augment_training: true
+pattern_size: 256
+
+include_background: true
+background_class: 0
+
+cache_dir: data/cache/

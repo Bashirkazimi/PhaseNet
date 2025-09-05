@@ -1,0 +1,34 @@
+# @package _global_
+
+# Configuration for 4D-STEM phase (material) classification
+
+defaults:
+  - _self_
+  - data: phase_stem
+  - model: phase_classification
+  - callbacks: default
+  - logger: tensorboard
+  - trainer: default
+  - paths: default
+  - extras: default
+  - hydra: default
+  - experiment: null
+  - hparams_search: null
+  - optional local: default
+  - debug: null
+
+# task name (used in output paths)
+task_name: "phase_classification"
+
+tags: ["4d_stem", "phase", "classification"]
+
+train: True
+test: True
+ckpt_path: null
+seed: 42
+compile: False
+
+# You can override class weighting or reliability from CLI, e.g.:
+# python src/train.py -cn train_phase_classification \
+#   model.class_weighting=effective model.use_reliability=true \
+#   data.reliability_map_filename=phase_reliability_map.tif

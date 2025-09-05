@@ -1,0 +1,43 @@
+_target_: src.models.phase_classification_module.PhaseClassificationModule
+
+# Number of classes (update according to your phase map)
+num_classes: 3  # e.g., background + 2 phases
+
+# Backbone / network
+network_type: resnet50  # or custom_cnn, efficientnet_b0 etc.
+network_config:
+  num_features: 512
+  dropout_rate: 0.2
+  hidden_dim: 256
+
+# Optimization
+learning_rate: 0.001
+weight_decay: 0.0001
+scheduler_type: cosine_warmup
+warmup_epochs: 5
+max_epochs: 100
+
+pretrained: true
+freeze_backbone: false
+compile_model: false
+
+# Optional class weights to handle imbalance (example commented)
+class_weights: null
+#  0: 0.2  # background
+#  1: 1.0  # phase 1
+#  2: 1.0  # phase 2
+
+# Automatic class weighting strategies (if class_weights null)
+class_weighting: effective  # none|inverse|effective
+
+# Example class counts (update based on your data)
+class_counts: {0: 103, 1: 59923, 2: 29974}
+effective_beta: 0.9999
+class_weight_cap: 20.0
+
+# Reliability weighting
+use_reliability: true
+reliability_epsilon: 0.05
+reliability_power: 1.0
+logit_adjustment: false
+tau: 0.5
